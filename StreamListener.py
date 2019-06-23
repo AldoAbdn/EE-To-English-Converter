@@ -3,20 +3,72 @@ import urllib3.request
 from bs4 import BeautifulSoup
 
 class StreamListener(tweepy.StreamListener):
-    def __init__(self, api, appendage='. '):
+    """Subclass of Tweepy SteamListener for reading URL articles 
+
+    Custom SteamListener for accessing twitters streaming API and reading
+    articles, replies to original tweet with contents of article 
+
+    Attributes: 
+        api: An object that contains twitter API object 
+        appendage: A String that is added to the end of tweet segments
+        hashtags: A String that is added to the end of tweet segments with hashtags
+        tweet_size: An Integer that is the length of each tweet segment  
+    """
+
+    def __init__(self, api, appendage='. ',hashtags='',tweet_size=280):
+        """init 
+
+        Initialises SteamListener
+
+        Args:
+            self: An object that represents instance 
+            api: An object that contains twitter API object 
+            appendage: A String that is added to the end of tweet segments
+            hashtags: A String that is added to the end of tweet segments with hashtags
+            tweet_size: An Integer that is the length of each tweet segment 
+
+        Returns:
+            A custom tweepy stream listener 
+        """
         super(StreamListener)
         self.api = api
         self.appendage = appendage
-        self.hashtags = '#Aberdeen #News'
-        self.tweet_size = 280
+        self.hashtags = hashtags
+        self.tweet_size = tweet_size
 
     def on_status(self,status):
+        """Status event handler 
+
+        Called when listener detects a new status has been posted, calls 
+        convert tweet to read tweet 
+
+        Args: 
+            self: An object that represents instance 
+            status: An object that represents a tweet 
+        """
         self.convertTweet(status)
 
     def on_error(self, status_code):
-        print(status_code);
+        """Error event handler 
+
+        Called when an error occurs. returns twitter api status code 
+        prints status code 
+
+        Args: 
+            self: An object that represents instance 
+            status_code: An integer representing twitter api status code
+        """
+        print(status_code)
 
     def convertTweet(self,status):
+        """Reads articles from URL within a tweet 
+
+        Reads the first URL within a tweet and replies to status with text from article
+
+        Args: 
+            self: An object that represents instance 
+            status: An object that represents a tweet 
+        """
         tweet_id = status.id
         try:
             url = status.entities['urls'][0]['url']

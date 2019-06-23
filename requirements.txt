@@ -1,0 +1,3 @@
+tweepy
+urllib3
+bs4
