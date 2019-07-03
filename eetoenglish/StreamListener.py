@@ -1,4 +1,6 @@
 import tweepy
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 import urllib3.request
 from bs4 import BeautifulSoup
 
