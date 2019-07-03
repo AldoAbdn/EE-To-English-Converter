@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 import tweepy
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -17,7 +18,7 @@ class StreamListener(tweepy.StreamListener):
         tweet_size: An Integer that is the length of each tweet segment  
     """
 
-    def __init__(self, api, appendage='. ',hashtags='',tweet_size=280):
+    def __init__(self, api, appendage=' ',hashtags='',tweet_size=280):
         """init 
 
         Initialises SteamListener
@@ -71,14 +72,26 @@ class StreamListener(tweepy.StreamListener):
             self: An object that represents instance 
             status: An object that represents a tweet 
         """
+        #Variables
         tweet_id = status.id
+        screen_name = "@"+status.user.screen_name;
         try:
             url = status.entities['urls'][0]['url']
         except IndexError:
             return
+        #Convert content into tweets
+        content = self.getHTMLContent(url)
+        sentences = self.splitIntoSentences(content)
+        tweets = self.createTweets(sentences, screen_name)
+        self.postTweets(tweet_id,tweets)
+
+    def getHTMLContent(self,url):
         response = urllib3.PoolManager().request("GET",url)
         parsed_html = BeautifulSoup(response.data.decode('utf-8'),features="html.parser")
         content = parsed_html.body.find('div', attrs={'class':'lightbox-content'})
+        return content
+
+    def splitIntoSentences(self,content):
         try:
             paragraphs = content.find_all('p')
         except AttributeError:
@@ -86,13 +99,17 @@ class StreamListener(tweepy.StreamListener):
         content_string = ""
         for p in paragraphs:
             content_string += p.text
-        sentences = content_string.split(".")
-        tweets = []
+        delimiter = "."
+        sentences = [sentence+delimiter for sentence in content_string.split(delimiter) if sentence]
+        return sentences
+
+    def createTweets(self, sentences, screen_name):
+        tweets = ["@"+screen_name]
         sentence_index = 0
-        tweet_index = 0
+        tweet_index = 1
         while sentence_index < (len(sentences)-1):
             if len(tweets)==tweet_index:
-                tweets.insert(tweet_index,sentences[sentence_index]+self.appendage)
+                tweets.insert(tweet_index,screen_name+sentences[sentence_index]+self.appendage)
                 sentence_index+=1
             elif len(tweets[tweet_index]) + len(sentences[sentence_index]) + len(self.appendage) > self.tweet_size:
                 if len(tweets[tweet_index])+len(self.hashtags)<self.tweet_size:
@@ -101,10 +118,18 @@ class StreamListener(tweepy.StreamListener):
             else:
                 tweets[tweet_index] += sentences[sentence_index]+self.appendage
                 sentence_index += 1
-        tweets.append(self.hashtags)
+        if (self.hashtags!=""):
+            tweets.append(self.hashtags)
+        return tweets
+
+    def postTweets(self, tweet_id,tweets):
         for tweet in tweets:
             try:
                 status = self.api.update_status(tweet, in_reply_to_status_id=tweet_id)
-            except tweepy.error.TweepError:
-                print(tweet)
+            except tweepy.error.TweepError as e:
+                print(e)
+                print(tweet + "ERROR")
+            except UnicodeDecodeError as e:
+                print(e)
+                print(tweet + "UNICODE_ERROR")
             tweet_id = status.id
