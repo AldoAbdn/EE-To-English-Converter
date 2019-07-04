@@ -104,17 +104,26 @@ class StreamListener(tweepy.StreamListener):
         return sentences
 
     def createTweets(self, sentences, screen_name):
-        tweets = ["@"+screen_name]
+        tweets = [screen_name]
         sentence_index = 0
         tweet_index = 1
+        #While we haven't gone through all the sentences 
         while sentence_index < (len(sentences)-1):
+            #If we are starting a new tweet
             if len(tweets)==tweet_index:
-                tweets.insert(tweet_index,screen_name+sentences[sentence_index]+self.appendage)
-                sentence_index+=1
+                #If sentence + appendage is not greater than tweet size
+                if(len(sentences(sentence_index)+self.appendage) <= self.tweet_size):
+                    tweets.insert(tweet_index,sentences[sentence_index]+self.appendage)
+                    sentence_index+=1
+                else:
+                    
+            #Else if the combined size is greater than the tweet size, start a new tweet 
             elif len(tweets[tweet_index]) + len(sentences[sentence_index]) + len(self.appendage) > self.tweet_size:
+                #If there is room, add hashtags to end
                 if len(tweets[tweet_index])+len(self.hashtags)<self.tweet_size:
                     tweets[tweet_index] += self.hashtags
                 tweet_index += 1
+            #Else add sentence to existing tweet 
             else:
                 tweets[tweet_index] += sentences[sentence_index]+self.appendage
                 sentence_index += 1
@@ -125,11 +134,14 @@ class StreamListener(tweepy.StreamListener):
     def postTweets(self, tweet_id,tweets):
         for tweet in tweets:
             try:
-                status = self.api.update_status(tweet, in_reply_to_status_id=tweet_id)
+                status = self.api.update_status(tweet.encode('utf-8'), in_reply_to_status_id=tweet_id)
             except tweepy.error.TweepError as e:
                 print(e)
                 print(tweet + "ERROR")
             except UnicodeDecodeError as e:
                 print(e)
-                print(tweet + "UNICODE_ERROR")
+                print(tweet + "UNICODE_DECODE_ERROR")
+            except UnicodeEncodeError as e:
+                print(e)
+                print(tweet + "UNICODE_ENCODE_ERROR")
             tweet_id = status.id
