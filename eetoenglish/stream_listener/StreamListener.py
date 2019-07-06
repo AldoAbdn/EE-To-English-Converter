@@ -74,7 +74,7 @@ class StreamListener(tweepy.StreamListener):
         """
         #Variables
         tweet_id = status.id
-        screen_name = "@"+status.user.screen_name;
+        screen_name = "@"+status.user.screen_name
         try:
             url = status.entities['urls'][0]['url']
         except IndexError:
@@ -86,12 +86,34 @@ class StreamListener(tweepy.StreamListener):
         self.postTweets(tweet_id,tweets)
 
     def getHTMLContent(self,url):
+        """Parses html body and returns it
+
+        Takes in a url, fetches the html and then returns the first div that has the right class
+
+        Args: 
+            self: An object that represents instance
+            url: A string that contains a URL
+
+        Returns:
+            An object that represents the DOM of the HTML document 
+        """
         response = urllib3.PoolManager().request("GET",url)
         parsed_html = BeautifulSoup(response.data.decode('utf-8'),features="html.parser")
         content = parsed_html.body.find('div', attrs={'class':'lightbox-content'})
         return content
 
     def splitIntoSentences(self,content):
+        """Splits Paragraphs into sentences
+
+        Loops through paragraphs and then splits it into sentenes to be combined into tweets later
+
+        Args: 
+            self: An object that represents instance
+            content: An object that represents DOM of HTML doc
+
+        Returns:
+            An list of strings 
+        """
         #Get all paragraphs 
         try:
             paragraphs = content.find_all('p')
@@ -105,7 +127,19 @@ class StreamListener(tweepy.StreamListener):
         return sentences
 
     def createTweets(self, sentences, screen_name):
-        tweets = [screen_name + " This tweet was brought to you by @AldoAbdn"]
+        """Combines sentences into tweets 
+
+        Combines sentences into tweets, splits sentences that are too long 
+
+        Args: 
+            self: An object that represents instance
+            sentences: A list of string sentences
+            screen_name: A string that represents the original tweeter's name
+
+        Returns:
+            An list of strings 
+        """
+        tweets = [screen_name + " This tweet was brought was created by EE-To-English-Converter: https://github.com/AldoAbdn/EE-To-English-Converter .Any issues with this thread, please tweet at @AldoAbdn"]
         sentence_index = 0
         tweet_index = 1
         #While we haven't gone through all the sentences 
@@ -151,6 +185,15 @@ class StreamListener(tweepy.StreamListener):
         return tweets
 
     def postTweets(self, tweet_id,tweets):
+        """Posts tweets to twitter
+
+        Posts tweets to twitter as a reply to the original in a thread 
+
+        Args: 
+            self: An object that represents instance
+            tweet_id: A string representing the ID of the original tweet
+            tweets: A list of strings representing tweets
+        """
         for tweet in tweets:
             try:
                 status = self.api.update_status(status=tweet.encode('utf-8'), in_reply_to_status_id=tweet_id)

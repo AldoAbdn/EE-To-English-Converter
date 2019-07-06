@@ -1,2 +1,5 @@
 __init__.pyc
 StreamListener.pyc
+.env
+.vscode
+__pycache__
