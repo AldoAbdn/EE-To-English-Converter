@@ -92,6 +92,7 @@ class StreamListener(tweepy.StreamListener):
         return content
 
     def splitIntoSentences(self,content):
+        #Get all paragraphs 
         try:
             paragraphs = content.find_all('p')
         except AttributeError:
@@ -104,7 +105,7 @@ class StreamListener(tweepy.StreamListener):
         return sentences
 
     def createTweets(self, sentences, screen_name):
-        tweets = [screen_name]
+        tweets = [screen_name + " This tweet was brought to you by @AldoAbdn"]
         sentence_index = 0
         tweet_index = 1
         #While we haven't gone through all the sentences 
@@ -112,11 +113,29 @@ class StreamListener(tweepy.StreamListener):
             #If we are starting a new tweet
             if len(tweets)==tweet_index:
                 #If sentence + appendage is not greater than tweet size
-                if(len(sentences(sentence_index)+self.appendage) <= self.tweet_size):
+                if(len(sentences[sentence_index])+len(self.appendage) <= self.tweet_size):
                     tweets.insert(tweet_index,sentences[sentence_index]+self.appendage)
                     sentence_index+=1
+                #Else if sentence itself is short enough
+                elif(len(sentences[sentence_index])<=self.tweet_size):
+                    tweets.insert(tweet_index,sentences[sentence_index]+self.appendage)
+                    sentence_index+=1
+                #Else sentence is too long and needs split up
                 else:
-                    
+                    sentence = sentences[sentence_index]
+                    words = sentence.split()
+                    split_sentences = [""]
+                    split_index = 0
+                    #Put words into new sentences
+                    for word in words:
+                        if(split_sentences[split_index]+len(word)<=self.tweet_size):
+                            split_sentences[split_index] += word
+                        else:
+                            split_index+=1
+                            split_sentences[split_index] = ""
+                    #Add sentences to original list 
+                    for x in range(len(split_sentences)):
+                        sentences[sentence_index + x].insert(x,split_sentences)
             #Else if the combined size is greater than the tweet size, start a new tweet 
             elif len(tweets[tweet_index]) + len(sentences[sentence_index]) + len(self.appendage) > self.tweet_size:
                 #If there is room, add hashtags to end
@@ -134,7 +153,8 @@ class StreamListener(tweepy.StreamListener):
     def postTweets(self, tweet_id,tweets):
         for tweet in tweets:
             try:
-                status = self.api.update_status(tweet.encode('utf-8'), in_reply_to_status_id=tweet_id)
+                status = self.api.update_status(status=tweet.encode('utf-8'), in_reply_to_status_id=tweet_id)
+                tweet_id = status.id
             except tweepy.error.TweepError as e:
                 print(e)
                 print(tweet + "ERROR")
@@ -144,4 +164,3 @@ class StreamListener(tweepy.StreamListener):
             except UnicodeEncodeError as e:
                 print(e)
                 print(tweet + "UNICODE_ENCODE_ERROR")
-            tweet_id = status.id
