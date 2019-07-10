@@ -34,4 +34,5 @@ while True:
         stream.filter(follow=['19765204',],track=['#EEBOTTEST'],stall_warnings=True)
     except (ProtocolError):
         continue
-
+    except Exception as e:
+        print(e)
