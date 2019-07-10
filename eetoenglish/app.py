@@ -20,7 +20,7 @@ def hello():
     return "Hello World!"
 
 if __name__ == '__main__':
-    app.run(debug=true)
+    app.run(debug=True)
 
 auth = tweepy.OAuthHandler(os.environ["CONSUMER_TOKEN"], os.environ["CONSUMER_SECRET"])
 auth.set_access_token(os.environ["KEY"], os.environ["SECRET"])
