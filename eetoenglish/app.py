@@ -25,13 +25,14 @@ auth.set_access_token(os.environ["KEY"], os.environ["SECRET"])
 api = tweepy.API(auth)
 
 streamlistener = StreamListener(api, appendage=os.environ["APPENDAGE"], hashtags=os.environ["HASHTAGS"], tweet_size=int(os.environ["TWEET_SIZE"]))
-if __name__ == '__main__':
-    stream = tweepy.Stream(auth=api.auth, listener=streamlistener)
-while True:
+stream = tweepy.Stream(auth=api.auth, listener=streamlistener)
+stream.filter(follow=['19765204',],track=['#EEBOTTEST'],stall_warnings=True)
+
+""" while True:
     try:
         stream.filter(follow=['19765204',],track=['#EEBOTTEST'],stall_warnings=True)
     except (ProtocolError) as e:
         print(e)
         continue
     except Exception as e:
-        print(e)
+        print(e) """
