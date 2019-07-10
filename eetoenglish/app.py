@@ -26,7 +26,7 @@ api = tweepy.API(auth)
 
 streamlistener = StreamListener(api, appendage=os.environ["APPENDAGE"], hashtags=os.environ["HASHTAGS"], tweet_size=int(os.environ["TWEET_SIZE"]))
 stream = tweepy.Stream(auth=api.auth, listener=streamlistener)
-stream.filter(follow=['19765204',],track=['#EEBOTTEST'],stall_warnings=True)
+stream.filter(follow=['19765204',],track=['#EEBOTTEST'],stall_warnings=True,is_async=True)
 
 """ while True:
     try:
