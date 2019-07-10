@@ -1,1 +1,1 @@
-web: gunicorn eetoenglish/app:run
+web: gunicorn /eetoenglish/app:run
