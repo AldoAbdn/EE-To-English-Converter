@@ -1,1 +1,1 @@
-web: gunicorn -pythonpath eetoenglish app:app
+web: gunicorn --pythonpath eetoenglish app:app
