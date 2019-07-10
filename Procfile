@@ -1,1 +1,1 @@
-web: gunicorn /eetoenglish/app:run
+web: gunicorn ee-to-eetoenglish-converter/eetoenglish/app:run
