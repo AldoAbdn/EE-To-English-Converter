@@ -14,23 +14,24 @@ import tweepy
 from eetoenglish.stream_listener.StreamListener import StreamListener
 from urllib3.exceptions import ProtocolError
 
-#Flask Setup
-@app.route("/")
-def hello():
-    return "Hello World!"
+def run(environ, start_response):
+    #Flask Setup
+    @app.route("/")
+    def hello():
+        return "Hello World!"
 
-app.run()
+    app.run()
 
-auth = tweepy.OAuthHandler(os.environ["CONSUMER_TOKEN"], os.environ["CONSUMER_SECRET"])
-auth.set_access_token(os.environ["KEY"], os.environ["SECRET"])
+    auth = tweepy.OAuthHandler(os.environ["CONSUMER_TOKEN"], os.environ["CONSUMER_SECRET"])
+    auth.set_access_token(os.environ["KEY"], os.environ["SECRET"])
 
-api = tweepy.API(auth)
+    api = tweepy.API(auth)
 
-streamlistener = StreamListener(api, appendage=os.environ["APPENDAGE"], hashtags=os.environ["HASHTAGS"], tweet_size=os.environ["TWEET_SIZE"])
-stream = tweepy.Stream(auth=api.auth, listener=streamlistener)
-while True:
-    try:
-        stream.filter(follow=['19765204',],track=['#EEBOTTEST'],stall_warnings=True)
-    except (ProtocolError):
-        continue
+    streamlistener = StreamListener(api, appendage=os.environ["APPENDAGE"], hashtags=os.environ["HASHTAGS"], tweet_size=os.environ["TWEET_SIZE"])
+    stream = tweepy.Stream(auth=api.auth, listener=streamlistener)
+    while True:
+        try:
+            stream.filter(follow=['19765204',],track=['#EEBOTTEST'],stall_warnings=True)
+        except (ProtocolError):
+            continue
 
