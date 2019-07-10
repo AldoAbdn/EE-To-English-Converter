@@ -1,1 +1,1 @@
-web: gunicorn ee-to-eetoenglish-converter/eetoenglish/app:run
+web: gunicorn -pythonpath eetoenglish app:app
