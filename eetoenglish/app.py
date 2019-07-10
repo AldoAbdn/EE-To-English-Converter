@@ -32,7 +32,8 @@ stream = tweepy.Stream(auth=api.auth, listener=streamlistener)
 while True:
     try:
         stream.filter(follow=['19765204',],track=['#EEBOTTEST'],stall_warnings=True)
-    except (ProtocolError):
+    except (ProtocolError) as e:
+        print(e)
         continue
     except Exception as e:
         print(e)
