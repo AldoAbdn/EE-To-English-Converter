@@ -50,7 +50,7 @@ class StreamListener(tweepy.StreamListener):
             status: An object that represents a tweet 
         """
         #Log status to check
-        print(" ")
+        print("")
         print(status)
         #Filters out retweets and replies 
         if(not status.retweeted and status.in_reply_to_status_id == None):
@@ -175,7 +175,7 @@ class StreamListener(tweepy.StreamListener):
                             split_sentences[split_index] = ""
                     #Add sentences to original list 
                     for x in range(len(split_sentences)):
-                        sentences[sentence_index + x].insert(x,split_sentences)
+                        sentences.insert(sentence_index + x,split_sentences[x])
             #Else if the combined size is greater than the tweet size, start a new tweet 
             elif len(tweets[tweet_index]) + len(sentences[sentence_index]) + len(self.appendage) > self.tweet_size:
                 #If there is room, add hashtags to end
