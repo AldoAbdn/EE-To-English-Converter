@@ -140,7 +140,7 @@ class StreamListener(tweepy.StreamListener):
         """
         if sentences is None:
             return
-        tweets = [screen_name + " This tweet was created by EE-To-English-Converter: https://github.com/AldoAbdn/EE-To-English-Converter .Any issues with this thread, please tweet at @AldoAbdn"]
+        tweets = [screen_name + " This tweet was created by EE-To-English-Converter: github.com/AldoAbdn/EE-To-English-Converter .Any issues with this thread, please tweet at @AldoAbdn"]
         sentence_index = 0
         tweet_index = 1
         #While we haven't gone through all the sentences 
