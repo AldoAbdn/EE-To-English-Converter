@@ -53,7 +53,7 @@ class StreamListener(tweepy.StreamListener):
         print("")
         print(status)
         #Filters out retweets and replies 
-        if(not status.retweeted and status.in_reply_to_status_id == None):
+        if(not this.isReply(status)):
             self.convertTweet(status)
 
     def on_error(self, status_code):
@@ -213,3 +213,7 @@ class StreamListener(tweepy.StreamListener):
             except UnicodeEncodeError as e:
                 print(e)
                 print(tweet + "UNICODE_ENCODE_ERROR")
+
+    def isReply(status):
+        if(status.retweeted or status.retweeted_status or status.in_reply_to_status_id or status.in_reply_to_status_id_str or status.in_reply_to_user_id) or status.in_reply_to_user_id_str or status.in_reply_to_screen_name):
+            return True;
