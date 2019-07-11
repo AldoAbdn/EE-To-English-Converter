@@ -8,6 +8,7 @@ This is because they often hide the content of their site behind adds.
 from dotenv import load_dotenv 
 load_dotenv()
 import os
+from flask import Flask
 import tweepy
 from eetoenglish.stream_listener.StreamListener import StreamListener
 from urllib3.exceptions import ProtocolError
@@ -20,6 +21,9 @@ api = tweepy.API(auth)
 streamlistener = StreamListener(api, appendage=os.environ["APPENDAGE"], hashtags=os.environ["HASHTAGS"], tweet_size=int(os.environ["TWEET_SIZE"]))
 stream = tweepy.Stream(auth=api.auth, listener=streamlistener)
 stream.filter(follow=['19765204',],track=['#EEBOTTEST'],stall_warnings=True,is_async=True)
+
+app = Flask(__name__)
+app.run(host='0.0.0.0', port=os.environ.get('PORT'))
 
 """ while True:
     try:

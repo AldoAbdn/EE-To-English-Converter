@@ -1,1 +1,1 @@
-worker: python eetoenglish/app.py
+web: python eetoenglish/app.py
