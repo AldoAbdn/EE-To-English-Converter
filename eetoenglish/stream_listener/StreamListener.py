@@ -50,6 +50,7 @@ class StreamListener(tweepy.StreamListener):
             status: An object that represents a tweet 
         """
         #Log status to check
+        print(" ")
         print(status)
         #Filters out retweets and replies 
         if(not status.retweeted and status.in_reply_to_status_id == None):
