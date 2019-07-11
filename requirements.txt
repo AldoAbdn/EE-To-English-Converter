@@ -2,5 +2,3 @@ tweepy
 urllib3
 bs4
 python-dotenv
-flask
-gunicorn
