@@ -215,5 +215,13 @@ class StreamListener(tweepy.StreamListener):
                 print(tweet + "UNICODE_ENCODE_ERROR")
 
     def isReply(self,status):
+        """Checks if a status is a reply
+
+        Checks attributes of status object for any that can identify it as a reply
+
+        Args: 
+            self: An object that represents instance
+            status: An object that represents a tweet 
+        """
         if(status.retweeted or status.retweeted_status or status.in_reply_to_status_id or status.in_reply_to_status_id_str or status.in_reply_to_user_id or status.in_reply_to_user_id_str or status.in_reply_to_screen_name):
             return True
