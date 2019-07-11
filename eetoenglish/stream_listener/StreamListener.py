@@ -53,7 +53,7 @@ class StreamListener(tweepy.StreamListener):
         print("")
         print(status)
         #Filters out retweets and replies 
-        if(not this.isReply(status)):
+        if(not self.isReply(status)):
             self.convertTweet(status)
 
     def on_error(self, status_code):
