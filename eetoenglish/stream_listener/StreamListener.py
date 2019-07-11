@@ -138,7 +138,7 @@ class StreamListener(tweepy.StreamListener):
         Returns:
             An list of strings 
         """
-        if sentences === None:
+        if sentences is None:
             return;
         tweets = [screen_name + " This tweet was created by EE-To-English-Converter: https://github.com/AldoAbdn/EE-To-English-Converter .Any issues with this thread, please tweet at @AldoAbdn"]
         sentence_index = 0
