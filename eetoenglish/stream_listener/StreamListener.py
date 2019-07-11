@@ -99,8 +99,7 @@ class StreamListener(tweepy.StreamListener):
         """
         response = urllib3.PoolManager().request("GET",url)
         parsed_html = BeautifulSoup(response.data.decode('utf-8'),features="html.parser")
-        content = parsed_html.body.find('div', attrs={'class':'lightbox-content'})
-        return content
+        return parsed_html
 
     def splitIntoSentences(self,content):
         """Splits Paragraphs into sentences
@@ -139,6 +138,8 @@ class StreamListener(tweepy.StreamListener):
         Returns:
             An list of strings 
         """
+        if sentences === None:
+            return;
         tweets = [screen_name + " This tweet was created by EE-To-English-Converter: https://github.com/AldoAbdn/EE-To-English-Converter .Any issues with this thread, please tweet at @AldoAbdn"]
         sentence_index = 0
         tweet_index = 1
