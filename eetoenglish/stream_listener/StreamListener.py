@@ -216,4 +216,4 @@ class StreamListener(tweepy.StreamListener):
 
     def isReply(self,status):
         if(status.retweeted or status.retweeted_status or status.in_reply_to_status_id or status.in_reply_to_status_id_str or status.in_reply_to_user_id or status.in_reply_to_user_id_str or status.in_reply_to_screen_name):
-            return True;
+            return True
