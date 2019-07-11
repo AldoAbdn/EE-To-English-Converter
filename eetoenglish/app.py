@@ -25,11 +25,11 @@ stream.filter(follow=['19765204',],track=['#EEBOTTEST'],stall_warnings=True,is_a
 app = Flask(__name__)
 app.run(host='0.0.0.0', port=os.environ.get('PORT'))
 
-""" while True:
+while True:
     try:
         stream.filter(follow=['19765204',],track=['#EEBOTTEST'],stall_warnings=True)
     except (ProtocolError) as e:
         print(e)
         continue
     except Exception as e:
-        print(e) """
+        print(e)
