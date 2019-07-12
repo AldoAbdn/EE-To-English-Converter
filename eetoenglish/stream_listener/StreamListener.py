@@ -223,16 +223,7 @@ class StreamListener(tweepy.StreamListener):
             self: An object that represents instance
             status: An object that represents a tweet 
         """
-<<<<<<< HEAD
         if(status.retweeted or status.in_reply_to_status_id or status.in_reply_to_status_id_str or status.in_reply_to_user_id or status.in_reply_to_user_id_str or status.in_reply_to_screen_name):
             return True
         else:
-=======
-        try:
-            if(status.retweeted or status.retweeted_status or status.in_reply_to_status_id or status.in_reply_to_status_id_str or status.in_reply_to_user_id or status.in_reply_to_user_id_str or status.in_reply_to_screen_name):
-                return True
-            else:
-                return False
-        except AttributeError:
->>>>>>> 1c6ac74b3128cf502907060c88a52ca7799b99e8
             return False
