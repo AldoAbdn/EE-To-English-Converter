@@ -223,7 +223,7 @@ class StreamListener(tweepy.StreamListener):
             self: An object that represents instance
             status: An object that represents a tweet 
         """
-        if(status.retweeted or status.in_reply_to_status_id or status.in_reply_to_status_id_str or status.in_reply_to_user_id or status.in_reply_to_user_id_str or status.in_reply_to_screen_name or strpos(status.text,'RT')===0)):
+        if(status.retweeted or status.in_reply_to_status_id or status.in_reply_to_status_id_str or status.in_reply_to_user_id or status.in_reply_to_user_id_str or status.in_reply_to_screen_name or status.text.startswith('RT')):
             return True
         else:
             return False
