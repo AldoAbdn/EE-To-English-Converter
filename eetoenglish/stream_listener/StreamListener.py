@@ -229,4 +229,4 @@ class StreamListener(tweepy.StreamListener):
             else:
                 return False
         except AttributeError:
-            return True
+            return False
