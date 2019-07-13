@@ -141,7 +141,7 @@ class StreamListener(tweepy.StreamListener):
         if sentences is None:
             return
         tweet = "https://twitter.com/" + status.user.id + "/status/" + status.id + " " + self.tweet_intro + " " + self.hashtags
-        self.postTweet(tweet)
+        status = self.postTweet(tweet)
         tweet = ""
         sentence_index = 0
         #While we haven't gone through all the sentences 
@@ -177,7 +177,7 @@ class StreamListener(tweepy.StreamListener):
                 #If there is room, add hashtags to end
                 if len(tweet)+len(self.hashtags)<self.tweet_size:
                     tweet += self.hashtags
-                self.postTweet(tweet)
+                status = self.postTweet(tweet, status.id)
                 tweet=""
             #Else add sentence to existing tweet 
             else:
