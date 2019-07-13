@@ -140,7 +140,7 @@ class StreamListener(tweepy.StreamListener):
         """
         if sentences is None:
             return
-        tweet = "https://twitter.com/" + status.user.id + "/status/" + status.id + " " + self.tweet_intro + " " + self.hashtags
+        tweet = "https://twitter.com/" + str(status.user.id) + "/status/" + str(status.id) + " " + self.tweet_intro + " " + self.hashtags
         status = self.postTweet(tweet)
         tweet = ""
         sentence_index = 0
