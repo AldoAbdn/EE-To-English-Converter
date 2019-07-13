@@ -168,7 +168,7 @@ class StreamListener(tweepy.StreamListener):
                             split_sentences[split_index] += word
                         else:
                             split_index+=1
-                            split_sentences[split_index] = ""
+                            split_sentences.append("")
                     #Add sentences to original list 
                     for x in range(len(split_sentences)):
                         sentences.insert(sentence_index + x,split_sentences[x])
