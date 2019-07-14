@@ -158,7 +158,7 @@ class StreamListener(tweepy.StreamListener):
                     sentence_index+=1
                 #Else sentence is too long and needs split up
                 else:
-                    sentence = sentences[sentence_index]
+                    sentence = sentences.pop(sentence_index)
                     words = sentence.split()
                     split_sentences = [""]
                     split_index = 0
