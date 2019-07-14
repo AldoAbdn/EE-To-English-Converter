@@ -164,8 +164,10 @@ class StreamListener(tweepy.StreamListener):
                     split_index = 0
                     #Put words into new sentences
                     for word in words:
-                        if(len(split_sentences[split_index])+len(word)<=self.tweet_size):
+                        if(len(split_sentences[split_index])==0):
                             split_sentences[split_index] += word
+                        elif(len(split_sentences[split_index])+len(word)+1<=self.tweet_size):
+                            split_sentences[split_index] += " " + word
                         else:
                             split_index+=1
                             split_sentences.append("")
