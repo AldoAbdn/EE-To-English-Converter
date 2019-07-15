@@ -27,7 +27,7 @@ app.run(host='0.0.0.0', port=os.environ.get('PORT'))
 
 while True:
     try:
-        stream.filter(follow=['19765204',],track=['#EEBOTTEST'],stall_warnings=True)
+        stream.filter(follow=os.environ["FOLLOW"].split(),track=os.environ["TRACK"].split(),stall_warnings=True)
     except (ProtocolError) as e:
         print(e)
         continue
