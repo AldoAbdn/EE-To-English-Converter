@@ -159,18 +159,7 @@ class StreamListener(tweepy.StreamListener):
                 #Else sentence is too long and needs split up
                 else:
                     sentence = sentences.pop(sentence_index)
-                    words = sentence.split()
-                    split_sentences = [""]
-                    split_index = 0
-                    #Put words into new sentences
-                    for word in words:
-                        if(len(split_sentences[split_index])==0):
-                            split_sentences[split_index] += word
-                        elif(len(split_sentences[split_index])+len(word)+1<=self.tweet_size):
-                            split_sentences[split_index] += " " + word
-                        else:
-                            split_index+=1
-                            split_sentences.append("")
+                    split_sentences = self.splitSentence(sentence)
                     #Add sentences to original list 
                     for x in range(len(split_sentences)):
                         sentences.insert(sentence_index + x,split_sentences[x])
@@ -236,7 +225,7 @@ class StreamListener(tweepy.StreamListener):
             print(e)
             print(tweet + "UNICODE_ENCODE_ERROR")
 
-    def isReply(self,status):
+    def isReply(self, status):
         """Checks if a status is a reply
 
         Checks attributes of status object for any that can identify it as a reply
@@ -249,3 +238,29 @@ class StreamListener(tweepy.StreamListener):
             return True
         else:
             return False
+
+    def splitSentence(self, sentence):
+        """Splits sentences into smaller chunks 
+
+        Splits a long sentence into single worlds and combines the words into shorter sentences that can be tweeted 
+
+        Args: 
+            self: An object that represents instance
+            sentence: An String that represents a sentence 
+
+        Returns:
+            An list of strings 
+        """
+        words = sentence.split()
+        split_sentences = [""]
+        split_index = 0
+        #Put words into new sentences
+        for word in words:
+            if(len(split_sentences[split_index])==0):
+                split_sentences[split_index] += word
+            elif(len(split_sentences[split_index])+len(word)+1<=self.tweet_size):
+                split_sentences[split_index] += " " + word
+            else:
+                split_index+=1
+                split_sentences.append("")
+        return split_sentences
