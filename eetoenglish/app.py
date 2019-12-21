@@ -23,6 +23,11 @@ stream = tweepy.Stream(auth=api.auth, listener=streamlistener)
 stream.filter(follow=['19765204',],track=['#EEBOTTEST'],stall_warnings=True,is_async=True)
 
 app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "EE to English Converter";
+
 app.run(host='0.0.0.0', port=os.environ.get('PORT'))
 
 while True:
