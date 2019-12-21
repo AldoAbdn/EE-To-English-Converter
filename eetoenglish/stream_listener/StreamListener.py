@@ -78,6 +78,7 @@ class StreamListener(tweepy.StreamListener):
         """
         try:
             url = status.entities['urls'][0]['url']
+            print(url)
         except IndexError:
             return
         #Convert content into tweets
