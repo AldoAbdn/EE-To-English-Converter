@@ -26,7 +26,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return "EE to English Converter";
+    return "EE to English Converter"
 
 app.run(host='0.0.0.0', port=os.environ.get('PORT'))
 
