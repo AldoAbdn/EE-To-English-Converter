@@ -114,9 +114,9 @@ class StreamListener(tweepy.StreamListener):
         Returns:
             An list of strings 
         """
-        #Get all paragraphs 
+        #Get all paragraphs (with no css class)
         try:
-            paragraphs = content.find_all('p')
+            paragraphs = content.find_all('p',{'class':None})
         except AttributeError:
             return
         content_string = ""
