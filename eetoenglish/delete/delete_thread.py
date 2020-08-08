@@ -1,4 +1,4 @@
-#Tests replying to tweets
+#Deletes a thread of tweets 
 from dotenv import load_dotenv 
 load_dotenv()
 import os
@@ -6,9 +6,11 @@ import tweepy
 from eetoenglish.stream_listener.StreamListener import StreamListener
 from urllib3.exceptions import ProtocolError
 
+#Setup Auth
 auth = tweepy.OAuthHandler(os.environ["CONSUMER_TOKEN"], os.environ["CONSUMER_SECRET"])
 auth.set_access_token(os.environ["KEY"], os.environ["SECRET"])
 
+#Twitter API
 api = tweepy.API(auth)
 
 #ID of end of thread 
