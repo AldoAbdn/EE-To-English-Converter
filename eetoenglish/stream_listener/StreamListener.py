@@ -133,8 +133,6 @@ class StreamListener(tweepy.StreamListener):
         for p in paragraphs:
             content_string += p.text + " "
         sentences = tokenize.sent_tokenize(content_string)
-        print(sentences)
-        print(self.splitLargeSentences(sentences))
         return self.splitLargeSentences(sentences)
 
     def splitLargeSentences(self, sentences):
@@ -154,14 +152,10 @@ class StreamListener(tweepy.StreamListener):
             if len(sentences[sentence_index]) > self.tweet_size:
                     sentence = sentences.pop(sentence_index)
                     split_sentences = self.splitSentence(sentence)
-                    print(sentence_index)
                     #Add sentences to original list 
                     for x in range(len(split_sentences)):
                         sentences.insert(sentence_index + x,split_sentences[x])
                     sentence_index += len(split_sentences)
-                    print(split_sentences)
-                    print(sentence_index)
-                    print(sentences)
             else: 
                 sentence_index+=1
         return sentences
