@@ -90,10 +90,8 @@ class StreamListener(tweepy.StreamListener):
             sentences = self.splitIntoSentences(content)
             retry -= 1
         if retry != 0:
-            #debugging truncated last sentence
-            print(sentences)
             self.createTweets(sentences, status)
-        else:
+        elif jserror in sentences:
             print("JS Error for URL:" + url)
 
     def getHTMLContent(self,url):
@@ -168,14 +166,18 @@ class StreamListener(tweepy.StreamListener):
                 else:
                     sentence = sentences.pop(sentence_index)
                     split_sentences = self.splitSentence(sentence)
+                    print(split_sentences)
                     #Add sentences to original list 
                     for x in range(len(split_sentences)):
                         sentences.insert(sentence_index + x,split_sentences[x])
+                    print(sentences)
             #Else if the combined size is greater than the tweet size, start a new tweet 
             elif len(tweet) + len(sentences[sentence_index]) + len(self.appendage) > self.tweet_size:
                 #If there is room, add hashtags to end
                 if len(tweet)+len(self.hashtags)<self.tweet_size:
                     tweet += self.hashtags
+                print(sentence_index)
+                print(len(sentences)-1)
                 status = self.postTweet(tweet, status.id)
                 tweet=""
             #Else add sentence to existing tweet 
@@ -185,6 +187,8 @@ class StreamListener(tweepy.StreamListener):
         #If there is a tweet made up, post it 
         if(tweet!=""):
             self.postTweet(tweet, status.id)
+            print(sentence_index)
+            print(len(sentences)-1)
 
     def postTweets(self, tweet_id,tweets):
         """Posts tweets to twitter
