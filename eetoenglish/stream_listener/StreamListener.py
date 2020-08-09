@@ -180,9 +180,13 @@ class StreamListener(tweepy.StreamListener):
             else:
                 tweet += sentences[sentence_index]+self.appendage
                 sentence_index += 1
-        #If there is a tweet made up, post it 
+        #If there is a tweet still made up, post it 
         if(tweet!=""):
-            self.postTweet(tweet, status.id)
+            status = self.postTweet(tweet, status.id)
+            tweet = ""
+        #Post link to EE Subscript 
+        tweet = "https://www.eveningexpress.co.uk/subscribe/"
+        status = self.postTweet(tweet, status.id)
 
     def postTweets(self, tweet_id,tweets):
         """Posts tweets to twitter
