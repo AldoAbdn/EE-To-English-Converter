@@ -133,6 +133,8 @@ class StreamListener(tweepy.StreamListener):
         for p in paragraphs:
             content_string += p.text
         sentences = tokenize.sent_tokenize(content_string)
+        print(sentences)
+        print(self.splitLargeSentences(sentences))
         return self.splitLargeSentences(sentences)
 
     def splitLargeSentences(self, sentences):
@@ -152,10 +154,13 @@ class StreamListener(tweepy.StreamListener):
             if len(sentences[sentence_index]) > self.tweet_size:
                     sentence = sentences.pop(sentence_index)
                     split_sentences = self.splitSentence(sentence)
+                    print(sentence_index)
                     #Add sentences to original list 
                     for x in range(len(split_sentences)):
                         sentences.insert(sentence_index + x,split_sentences[x])
                     sentence_index += len(split_sentences)
+                    print(sentence_index)
+                    print(sentences)
             else: 
                 sentence_index+=1
         return sentences
@@ -229,7 +234,7 @@ class StreamListener(tweepy.StreamListener):
             Status
         """
         #If there is enough room at signature to end
-        if len(tweet)+len(self.tweet_signature)+len(self.appendage) <= len(self.tweet_size):
+        if len(tweet)+len(self.tweet_signature)+len(self.appendage) <= self.tweet_size:
             tweet+=self.appendage+self.tweet_signature
             return self.postTweet(tweet, status.id)
         #Else tweet on its own
