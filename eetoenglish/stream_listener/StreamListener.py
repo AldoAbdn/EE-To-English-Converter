@@ -233,7 +233,7 @@ class StreamListener(tweepy.StreamListener):
             tweet+=self.appendage+self.tweet_signature
             return self.postTweet(tweet, status.id)
         #else post seperatly
-        elif len(tweet) <= self.tweet_size:
+        else:
             status = self.postTweet(tweet, status.id)
             return self.postTweet(self.tweet_signature, status.id)
 
