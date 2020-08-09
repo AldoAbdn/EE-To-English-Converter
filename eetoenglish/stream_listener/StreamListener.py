@@ -129,7 +129,9 @@ class StreamListener(tweepy.StreamListener):
             paragraphs = content.find_all('p',{'class':None})
         except AttributeError:
             return
-        content_string = "".join(paragraphs)
+        content_string = ""
+        for p in paragraphs:
+            content_string += p.text
         sentences = tokenize.sent_tokenize(content_string)
         return self.splitLargeSentences(sentences)
 
