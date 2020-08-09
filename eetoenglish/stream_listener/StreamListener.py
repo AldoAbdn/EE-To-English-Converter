@@ -232,9 +232,11 @@ class StreamListener(tweepy.StreamListener):
         if len(tweet)+len(self.tweet_signature)+len(self.appendage) <= self.tweet_size :
             tweet+=self.appendage+self.tweet_signature
             return self.postTweet(tweet, status.id)
-        #Else tweet on its own
-        else:
+        #else post seperatly
+        elif len(tweet) <= self.tweet_size:
+            status = self.postTweet(tweet, status.id)
             return self.postTweet(self.tweet_signature, status.id)
+
 
     def postTweets(self, tweets, reply_id):
         """Posts tweets to twitter
