@@ -235,12 +235,12 @@ class StreamListener(tweepy.StreamListener):
             Status
         """
         #If there is enough room at signature to end
-        if len(tweet)+len(self.tweet_signature)+len(self.appendage) <= self.tweet_size:
+        if len(tweet)+len(self.tweet_signature)+len(self.appendage) <= self.tweet_size :
             tweet+=self.appendage+self.tweet_signature
             return self.postTweet(tweet, status.id)
         #Else tweet on its own
         else:
-            return self.postTweet(self.tweet_signature)
+            return self.postTweet(self.tweet_signature, status.id)
 
     def postTweets(self, tweets, reply_id):
         """Posts tweets to twitter
