@@ -319,5 +319,5 @@ class StreamListener(tweepy.StreamListener):
             #Start new sentence
             else:
                 split_index+=1
-                split_sentences.append("")
+                split_sentences.append(word)
         return split_sentences
