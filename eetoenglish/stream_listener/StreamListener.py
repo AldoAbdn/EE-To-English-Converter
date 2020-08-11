@@ -53,8 +53,8 @@ class StreamListener(tweepy.StreamListener):
             self: An object that represents instance 
             status: An object that represents a tweet 
         """
-        #Filters out retweets and replies 
-        if(not self.isReply(status)):
+        #Filters out retweets, replies and self
+        if(not self.isReply(status) and (self.api.me().id != status.user.id)):
             self.convertTweet(status)
 
     def on_error(self, status_code):
