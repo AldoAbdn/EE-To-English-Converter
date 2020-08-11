@@ -177,28 +177,21 @@ class StreamListener(tweepy.StreamListener):
         sentence_index = 0
         #While we haven't gone through all the sentences 
         while sentence_index < (len(sentences)):
-            #If we are starting a new tweet
-            if len(tweet)==0:
-                #If sentence + appendage is not greater than tweet size
-                if(len(sentences[sentence_index])+len(self.appendage) <= self.tweet_size):
-                    tweet+=sentences[sentence_index]+self.appendage
-                    sentence_index+=1
-                #Else if sentence itself is short enough
-                elif(len(sentences[sentence_index])<=self.tweet_size):
-                    tweet+=sentences[sentence_index]+self.appendage
-                    sentence_index+=1
+            #If sentence + appendage is not greater than tweet size
+            if len(tweet) + len(sentences[sentence_index]) + len(self.appendage) <= self.tweet_size:
+                tweet+=sentences[sentence_index]+self.appendage
+                sentence_index+=1
+            #Else if sentence itself is short enough
+            elif len(tweet) + len(sentences[sentence_index]) <= self.tweet_size:
+                tweet+=sentences[sentence_index]
+                sentence_index+=1
             #Else if the combined size is greater than the tweet size, start a new tweet 
             elif len(tweet) + len(sentences[sentence_index]) > self.tweet_size:
                 #If there is room, add hashtags to end
                 if len(tweet)+len(self.hashtags)<self.tweet_size:
                     tweet += self.hashtags
                 status = self.postTweet(tweet, status.id)
-                print(status)
                 tweet=""
-            #Else add sentence to existing tweet 
-            else:
-                tweet += sentences[sentence_index]+self.appendage
-                sentence_index += 1
         status = self.postSignatureTweet(tweet, status)
 
     def postIntroTweet(self, status):
