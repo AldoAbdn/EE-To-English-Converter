@@ -149,7 +149,7 @@ class StreamListener(tweepy.StreamListener):
         """
         sentence_index = 0
         while(sentence_index < (len(sentences))):
-            if len(sentences[sentence_index]) > self.tweet_size:
+            if len(sentences[sentence_index]) >= self.tweet_size:
                     sentence = sentences.pop(sentence_index)
                     split_sentences = self.splitSentence(sentence)
                     #Add sentences to original list 
@@ -314,7 +314,7 @@ class StreamListener(tweepy.StreamListener):
             if(len(split_sentences[split_index])==0):
                 split_sentences[split_index] += word
             #Rest of Words
-            elif(len(split_sentences[split_index])+len(word)+1<=self.tweet_size):
+            elif(len(split_sentences[split_index])+len(word)+1<self.tweet_size):
                 split_sentences[split_index] += " " + word
             #Start new sentence
             else:
